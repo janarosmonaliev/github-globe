@@ -4,7 +4,10 @@
   "description": "Pandemic information projected on a globe map",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config=webpack.prod.js",
+    "build-dev": "webpack --config=webpack.dev.js",
+    "start": "webpack serve webpack-dev-server --open --config=webpack.dev.js"
   },
   "keywords": [
     "pandemic",
@@ -15,10 +18,14 @@
   "author": "Zhanarbek Osmonaliev",
   "license": "ISC",
   "dependencies": {
-    "save-dev": "0.0.1-security",
     "three": "^0.124.0",
-    "three-globe": "^2.11.1",
+    "three-globe": "^2.11.1"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0",
+    "json-loader": "^0.5.7",
     "webpack": "^5.15.0",
-    "webpack-cli": "^4.3.1"
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.2"
   }
 }

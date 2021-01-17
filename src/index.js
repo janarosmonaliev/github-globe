@@ -30,12 +30,16 @@ function init() {
   scene = new Scene();
   scene.add(new AmbientLight(0xbbbbbb, 0.4));
   scene.background = new Color(0x040d21);
-  scene.add(new DirectionalLight(0xffffff, 0.8));
+  // scene.add(new DirectionalLight(0xffffff, 0.8));
 
-  // Initialize camera
+  // Initialize camera, light
   camera = new PerspectiveCamera();
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+  var directionalLight = new DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(0, 600, 300);
+  scene.add(directionalLight);
+  // camera.add(directionalLight);
   camera.position.z = 300;
 
   // Initialize controls

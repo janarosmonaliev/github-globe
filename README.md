@@ -7,6 +7,11 @@ Pandemic tracking information projected on a globe map.
 This personal project was inspired by Github's homepage, where they display Github activity on a globe map.
 ![Github website homepage](https://janarosmonaliev.github.io/pandemic-globe/src/files/github-home.png)
 
+## First steps
+
+As of January 18th, I have successfully implemented the globe with a dot map using [three-globe](https://github.com/vasturiano/three-globe) and added my own shading to it.
+![Pandemic globe v1](https://janarosmonaliev.github.io/pandemic-globe/src/files/pandemic-globe-v1.png)
+
 ### [Live demo](https://janarosmonaliev.github.io/pandemic-globe/)
 
 ## Usage

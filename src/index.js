@@ -10,12 +10,14 @@ import {
   DirectionalLightHelper,
   CameraHelper,
   PointLight,
+  SphereGeometry,
 } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-// import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
+import { createGlowMesh } from "three-glow-mesh";
 import countries from "./files/globe-data.json";
 import EarthDarkSkin from "./files/earth-dark.jpg";
 var renderer, camera, scene, controls;
+var angle = 0;
 var Globe;
 
 init();
@@ -54,15 +56,15 @@ function init() {
   dLight2.position.set(-200, 500, 200);
   camera.add(dLight2);
 
-  camera.position.z = 300;
+  camera.position.z = 400;
   scene.add(camera);
 
   // Additional effects
   scene.fog = new Fog(0x535ef3, 400, 2000);
 
   // Helpers
-  const axesHelper = new AxesHelper(800);
-  scene.add(axesHelper);
+  // const axesHelper = new AxesHelper(800);
+  // scene.add(axesHelper);
   // var helper = new DirectionalLightHelper(dLight);
   // scene.add(helper);
   // var helperCamera = new CameraHelper(dLight.shadow.camera);
@@ -70,7 +72,7 @@ function init() {
 
   // Initialize controls
   controls = new TrackballControls(camera, renderer.domElement);
-  controls.dynamicDampingFactor = 0.1;
+  controls.dynamicDampingFactor = 0.05;
   controls.noPan = true;
   controls.minDistance = 300;
   controls.maxDistance = 800;
@@ -104,6 +106,17 @@ function initGlobe() {
   globeMaterial.shininess = 0.7;
   // NOTE Cool stuff
   // globeMaterial.wireframe = true;
+
+  // Initialize glow
+  var options = {
+    backside: true,
+    color: "#3a228a",
+    size: 100 * 0.25,
+    power: 6,
+    coefficient: 0.3,
+  };
+  var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
+  Globe.add(glowMesh);
   scene.add(Globe);
 }
 
@@ -115,6 +128,9 @@ function onWindowResize() {
 }
 
 function animate() {
+  camera.position.x = 400 * Math.cos(angle);
+  camera.position.z = 400 * Math.sin(angle);
+  angle += 0.001;
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);

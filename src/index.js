@@ -142,7 +142,7 @@ function onWindowResize() {
 function animate() {
   // camera.position.x = 400 * Math.cos(angle);
   // camera.position.z = 400 * Math.sin(angle);
-  angle += 0.001;
+  // angle += 0.001;
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);

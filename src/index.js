@@ -21,6 +21,7 @@ var angle = 0;
 var Globe;
 
 init();
+getData();
 initGlobe();
 animate();
 
@@ -81,22 +82,33 @@ function init() {
 
   window.addEventListener("resize", onWindowResize, false);
 }
+function getData() {
+  var options = {
+    method: "GET",
+    redirect: "follow",
+  };
+  fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
+    .then((response) => response.json())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+}
 function initGlobe() {
   // Initialize the Globe
   Globe = new ThreeGlobe()
     // .globeImageUrl(EarthDarkSkin)
     .hexPolygonsData(countries.features)
-    .hexPolygonCurvatureResolution(9)
+    // .hexPolygonCurvatureResolution(9)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
     .hexPolygonColor(
-      () => "#ecfff8"
+      () => "#ffffff"
+
       // `#${Math.round(Math.random() * Math.pow(2, 24))
       //   .toString(16)
       //   .padStart(6, "0")}`
     );
-
+  console.log(Globe);
   const globeMaterial = Globe.globeMaterial();
   // globeMaterial.color = new Color(0x192250);
   // globeMaterial.color = new Color(0x3716a2);
@@ -128,8 +140,8 @@ function onWindowResize() {
 }
 
 function animate() {
-  camera.position.x = 400 * Math.cos(angle);
-  camera.position.z = 400 * Math.sin(angle);
+  // camera.position.x = 400 * Math.cos(angle);
+  // camera.position.z = 400 * Math.sin(angle);
   angle += 0.001;
   controls.update();
   renderer.render(scene, camera);

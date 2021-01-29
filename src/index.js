@@ -12,63 +12,20 @@ import {
   PointLight,
   SphereGeometry,
 } from "three";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { createGlowMesh } from "three-glow-mesh";
 import countries from "./files/globe-data-min.json";
-import EarthDarkSkin from "./files/earth-dark.jpg";
 var renderer, camera, scene, controls;
 var angle = 0;
 var Globe;
 var maxRelativeCases = 0;
 
-// SECTION Syncronous Init with Promises
-getData().then(() => {
-  init();
-  initGlobe();
-  onWindowResize();
-  animate();
-});
+// SECTION Init
 
-// Fetch surrounded with a Promise
-function getData() {
-  // Fetch data
-  var options = {
-    method: "GET",
-  };
-  return new Promise(function (resolve, reject) {
-    fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
-      .then((response) => response.json())
-      .then((json) => {
-        // merge data
-        prepareData(json).then(() => {
-          resolve();
-        });
-      })
-      .catch((error) => {
-        console.log("error", error);
-        reject();
-      });
-  });
-}
-
-// Merge data with Promises
-function prepareData(covidData) {
-  return new Promise(function (resolve, reject) {
-    for (let country of covidData) {
-      // Track relative max cases per million
-      if (country.activePerOneMillion > maxRelativeCases) {
-        maxRelativeCases = country.activePerOneMillion;
-      }
-      // Add field(s) to the main source
-      for (let entry of countries.features) {
-        if (entry.properties["ISO_A3"] === country.countryInfo.iso3) {
-          entry.properties["ACTIVE_PER_MILLION"] = country.activePerOneMillion;
-        }
-      }
-    }
-    resolve();
-  });
-}
+init();
+initGlobe();
+onWindowResize();
+animate();
 
 // SECTION Initializing core elements
 function init() {
@@ -117,13 +74,17 @@ function init() {
   // scene.add(helperCamera);
 
   // Initialize controls
-  controls = new TrackballControls(camera, renderer.domElement);
-  controls.dynamicDampingFactor = 0.05;
-  controls.noPan = true;
-  controls.minDistance = 300;
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dynamicDampingFactor = 0.01;
+  controls.enablePan = false;
+  controls.minDistance = 200;
   controls.maxDistance = 800;
-  controls.rotateSpeed = 1.5;
-  controls.zoomSpeed = 0.5;
+  controls.rotateSpeed = 0.8;
+  controls.zoomSpeed = 1;
+
+  controls.minPolarAngle = Math.PI / 3.5;
+  controls.maxPolarAngle = Math.PI - Math.PI / 3;
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -139,11 +100,7 @@ function initGlobe() {
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
     .hexPolygonColor((feature) => {
-      var index =
-        0.5 + (feature.properties["ACTIVE_PER_MILLION"] * 2) / maxRelativeCases;
-      console.log(index);
-      index = index ? index : 0;
-      return "#rgba(255,255,255," + index + ")";
+      return "#ffffff";
     });
 
   const globeMaterial = Globe.globeMaterial();

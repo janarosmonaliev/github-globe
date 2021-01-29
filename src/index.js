@@ -14,16 +14,50 @@ import {
 } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { createGlowMesh } from "three-glow-mesh";
-import countries from "./files/globe-data.json";
+import countries from "./files/globe-data-min.json";
 import EarthDarkSkin from "./files/earth-dark.jpg";
 var renderer, camera, scene, controls;
 var angle = 0;
 var Globe;
+var maxRelativeCases = 0;
 
-init();
 getData();
-initGlobe();
-animate();
+// init();
+// initGlobe();
+// onWindowResize();
+// animate();
+
+// ES6 Async Fetch call for COVID-19 Data
+function getData() {
+  // Fetch data
+  var options = {
+    method: "GET",
+  };
+  fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
+    .then((response) => response.json())
+    .then((json) => {
+      // merge data
+      prepareData(json);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+// Merge data
+function prepareData(covidData) {
+  for (let country of covidData) {
+    // Track relative max cases per million
+    if (country.activePerOneMillion > maxRelativeCases) {
+      maxRelativeCases = country.activePerOneMillion;
+    }
+    // Add field(s) to the main source
+    for (let entry of countries.features) {
+      if (entry.properties["ISO_A3"] === country.countryInfo.iso3) {
+        entry.properties["ACTIVE_PER_MILLION"] = country.activePerOneMillion;
+      }
+    }
+  }
+  init();
+}
 
 // SECTION Initializing core elements
 function init() {
@@ -81,17 +115,10 @@ function init() {
   controls.zoomSpeed = 0.5;
 
   window.addEventListener("resize", onWindowResize, false);
+  initGlobe();
 }
-function getData() {
-  var options = {
-    method: "GET",
-    redirect: "follow",
-  };
-  fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
-    .then((response) => response.json())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-}
+
+// SECTION Globe
 function initGlobe() {
   // Initialize the Globe
   Globe = new ThreeGlobe()
@@ -102,13 +129,16 @@ function initGlobe() {
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
     .hexPolygonColor(
-      () => "#ffffff"
+      (feature) => {
+        var index = feature.properties["ACTIVE_PER_MILLION"] / maxRelativeCases;
+        console.log(index);
+        return "#rgba(245,245,245," + index + ")";
+      }
 
       // `#${Math.round(Math.random() * Math.pow(2, 24))
       //   .toString(16)
       //   .padStart(6, "0")}`
     );
-  console.log(Globe);
   const globeMaterial = Globe.globeMaterial();
   // globeMaterial.color = new Color(0x192250);
   // globeMaterial.color = new Color(0x3716a2);
@@ -130,6 +160,8 @@ function initGlobe() {
   var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
   Globe.add(glowMesh);
   scene.add(Globe);
+
+  animate();
 }
 
 function onWindowResize() {

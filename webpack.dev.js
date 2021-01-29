@@ -8,7 +8,7 @@ module.exports = {
     contentBase: "./dist",
     open: false,
     hot: true,
-    // writeToDisk: true,
+    writeToDisk: true,
   },
   plugins: [],
   module: {

@@ -21,42 +21,53 @@ var angle = 0;
 var Globe;
 var maxRelativeCases = 0;
 
-getData();
-// init();
-// initGlobe();
-// onWindowResize();
-// animate();
+// SECTION Syncronous Init with Promises
+getData().then(() => {
+  init();
+  initGlobe();
+  onWindowResize();
+  animate();
+});
 
-// ES6 Async Fetch call for COVID-19 Data
+// Fetch surrounded with a Promise
 function getData() {
   // Fetch data
   var options = {
     method: "GET",
   };
-  fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
-    .then((response) => response.json())
-    .then((json) => {
-      // merge data
-      prepareData(json);
-    })
-    .catch((error) => console.log("error", error));
+  return new Promise(function (resolve, reject) {
+    fetch("https://corona.lmao.ninja/v2/countries?yesterday&sort", options)
+      .then((response) => response.json())
+      .then((json) => {
+        // merge data
+        prepareData(json).then(() => {
+          resolve();
+        });
+      })
+      .catch((error) => {
+        console.log("error", error);
+        reject();
+      });
+  });
 }
 
-// Merge data
+// Merge data with Promises
 function prepareData(covidData) {
-  for (let country of covidData) {
-    // Track relative max cases per million
-    if (country.activePerOneMillion > maxRelativeCases) {
-      maxRelativeCases = country.activePerOneMillion;
-    }
-    // Add field(s) to the main source
-    for (let entry of countries.features) {
-      if (entry.properties["ISO_A3"] === country.countryInfo.iso3) {
-        entry.properties["ACTIVE_PER_MILLION"] = country.activePerOneMillion;
+  return new Promise(function (resolve, reject) {
+    for (let country of covidData) {
+      // Track relative max cases per million
+      if (country.activePerOneMillion > maxRelativeCases) {
+        maxRelativeCases = country.activePerOneMillion;
+      }
+      // Add field(s) to the main source
+      for (let entry of countries.features) {
+        if (entry.properties["ISO_A3"] === country.countryInfo.iso3) {
+          entry.properties["ACTIVE_PER_MILLION"] = country.activePerOneMillion;
+        }
       }
     }
-  }
-  init();
+    resolve();
+  });
 }
 
 // SECTION Initializing core elements
@@ -115,7 +126,6 @@ function init() {
   controls.zoomSpeed = 0.5;
 
   window.addEventListener("resize", onWindowResize, false);
-  initGlobe();
 }
 
 // SECTION Globe
@@ -128,20 +138,15 @@ function initGlobe() {
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
-    .hexPolygonColor(
-      (feature) => {
-        var index = feature.properties["ACTIVE_PER_MILLION"] / maxRelativeCases;
-        console.log(index);
-        return "#rgba(245,245,245," + index + ")";
-      }
+    .hexPolygonColor((feature) => {
+      var index =
+        0.5 + (feature.properties["ACTIVE_PER_MILLION"] * 2) / maxRelativeCases;
+      console.log(index);
+      index = index ? index : 0;
+      return "#rgba(255,255,255," + index + ")";
+    });
 
-      // `#${Math.round(Math.random() * Math.pow(2, 24))
-      //   .toString(16)
-      //   .padStart(6, "0")}`
-    );
   const globeMaterial = Globe.globeMaterial();
-  // globeMaterial.color = new Color(0x192250);
-  // globeMaterial.color = new Color(0x3716a2);
   globeMaterial.color = new Color(0x3a228a);
   globeMaterial.emissive = new Color(0x220038);
   globeMaterial.emissiveIntensity = 0.1;
@@ -160,8 +165,6 @@ function initGlobe() {
   var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
   Globe.add(glowMesh);
   scene.add(Globe);
-
-  animate();
 }
 
 function onWindowResize() {

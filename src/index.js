@@ -1,5 +1,5 @@
 import ThreeGlobe from "three-globe";
-import { WebGLRenderer, Scene } from "three";
+import { WebGLRenderer, Scene, Object3D } from "three";
 import {
   PerspectiveCamera,
   AmbientLight,
@@ -13,6 +13,7 @@ import {
   SphereGeometry,
 } from "three";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { createGlowMesh } from "three-glow-mesh";
 import countries from "./files/globe-data-min.json";
 import EarthDarkSkin from "./files/earth-dark.jpg";
@@ -76,30 +77,32 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadow = true;
   // renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   // Initialize scene, light
   scene = new Scene();
-  scene.add(new AmbientLight(0xbbbbbb, 0.3));
+  scene.add(new AmbientLight(0xbbbbbb, 0.4));
   scene.background = new Color(0x040d21);
   // scene.add(new DirectionalLight(0xffffff, 0.8));
 
   // Initialize camera, light
   camera = new PerspectiveCamera();
   camera.aspect = window.innerWidth / window.innerHeight;
+  camera.castShadow = true;
   camera.updateProjectionMatrix();
 
-  var dLight = new DirectionalLight(0xffffff, 0.8);
+  var dLight = new DirectionalLight(0xffffff, 0.5);
   dLight.position.set(-800, 2000, 400);
   camera.add(dLight);
 
-  var dLight1 = new DirectionalLight(0x7982f6, 1);
-  dLight1.position.set(-200, 500, 200);
+  var dLight1 = new DirectionalLight(0xebebeb, 0.2);
+  dLight1.position.set(-200, 100, 800);
   camera.add(dLight1);
 
-  var dLight2 = new PointLight(0x8566cc, 0.5);
-  dLight2.position.set(-200, 500, 200);
+  var dLight2 = new PointLight(0xebebeb, 0.2);
+  dLight2.position.set(200, 100, 800);
   camera.add(dLight2);
 
   camera.position.z = 400;
@@ -117,13 +120,17 @@ function init() {
   // scene.add(helperCamera);
 
   // Initialize controls
-  controls = new TrackballControls(camera, renderer.domElement);
-  controls.dynamicDampingFactor = 0.05;
-  controls.noPan = true;
-  controls.minDistance = 300;
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dynamicDampingFactor = 0.01;
+  controls.enablePan = false;
+  controls.minDistance = 200;
   controls.maxDistance = 800;
-  controls.rotateSpeed = 1.5;
-  controls.zoomSpeed = 0.5;
+  controls.rotateSpeed = 0.8;
+  controls.zoomSpeed = 1;
+
+  controls.minPolarAngle = Math.PI / 3.5;
+  controls.maxPolarAngle = Math.PI - Math.PI / 3;
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -131,33 +138,40 @@ function init() {
 // SECTION Globe
 function initGlobe() {
   // Initialize the Globe
-  Globe = new ThreeGlobe()
+  Globe = new ThreeGlobe({ animateIn: false })
     // .globeImageUrl(EarthDarkSkin)
-    .hexPolygonsData(countries.features)
-    // .hexPolygonCurvatureResolution(9)
-    .hexPolygonResolution(3)
-    .hexPolygonMargin(0.7)
+    .polygonsData(
+      countries.features.filter((e) => e.properties.ISO_A2 !== "AQ")
+    )
     .showAtmosphere(false)
-    .hexPolygonColor((feature) => {
-      var index =
-        0.5 + (feature.properties["ACTIVE_PER_MILLION"] * 2) / maxRelativeCases;
-      console.log(index);
-      index = index ? index : 0;
-      return "#rgba(255,255,255," + index + ")";
+    .polygonAltitude(0.01)
+    .polygonStrokeColor(() => "#333333")
+    .polygonCapColor((feature) => {
+      if (feature.properties["ACTIVE_PER_MILLION"] === undefined)
+        return "#cccccc";
+      var hue =
+        90 -
+        Math.pow(
+          feature.properties["ACTIVE_PER_MILLION"] / maxRelativeCases,
+          1 / 3
+        ) *
+          90;
+      return "hsl(" + hue + ", 100%, 50%)";
     });
 
   const globeMaterial = Globe.globeMaterial();
-  globeMaterial.color = new Color(0x3a228a);
-  globeMaterial.emissive = new Color(0x220038);
-  globeMaterial.emissiveIntensity = 0.1;
-  globeMaterial.shininess = 0.7;
+  globeMaterial.color = new Color(0xf7f7f7);
+  globeMaterial.emissive = new Color(0xffffff);
+  globeMaterial.emissiveIntensity = 0.0;
+  globeMaterial.shininess = 0.0;
   // NOTE Cool stuff
   // globeMaterial.wireframe = true;
 
   // Initialize glow
   var options = {
     backside: true,
-    color: "#3a228a",
+    // color: "#3a228a",
+    color: "#9d0208",
     size: 100 * 0.25,
     power: 6,
     coefficient: 0.3,
@@ -165,6 +179,8 @@ function initGlobe() {
   var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
   Globe.add(glowMesh);
   scene.add(Globe);
+
+  // TODO Make country polygons receive light, shadow;
 }
 
 function onWindowResize() {

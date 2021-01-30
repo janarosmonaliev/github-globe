@@ -1,18 +1,18 @@
-# Pandemic Globe Map
+# Github Globe
 
-Pandemic tracking information projected on a globe map.
+[github-globe made by Zhanar Osmonaliev](https://janarosmonaliev.github.io/github-globe/src/files/github-globe-banner.png)
 
 ## Inspiration
 
-This personal project was inspired by Github's homepage, where they display Github activity on a globe map.
-![Github website homepage](https://janarosmonaliev.github.io/pandemic-globe/src/files/github-home.png)
+This project was inspired by [Github's homepage](https://github.com/home), where they display real-time Github activity on a globe map.
 
-## First steps
+## Implementation
 
-As of January 18th, I have successfully implemented the globe with a dot map using [three-globe](https://github.com/vasturiano/three-globe) and added my own shading to it.
-![Pandemic globe v1](https://janarosmonaliev.github.io/pandemic-globe/src/files/pandemic-globe-v1.png)
-I improved shading by using three direct light sources with one dim ambient light.
-![Pandemic globe v2](https://janarosmonaliev.github.io/pandemic-globe/src/files/pandemic-globe-v2.png)
+The globe is constructed with [three-globe](https://github.com/vasturiano/three-globe), a ThreeJS data-visualization project made by [@vasturiano](https://github.com/vasturiano). Then, the scene is shaded with a dim ambient light and multiple directional lights to resemble a dreamy space environment. The globe's `MeshPhongMaterial` is also adjusted to fit the environment.
+
+## Documentation
+
+Please visit [three-globe](https://github.com/vasturiano/three-globe) for detailed documentation if you want to edit the `Globe` object to add data visualization. Speaking of the Glow, `three-globe` does not let you access the glow mesh object yet, so the default glow was turned off and a separate `three-glow-mesh` is added to the scene instead.
 
 ### [Live demo](https://janarosmonaliev.github.io/pandemic-globe/)
 
@@ -20,19 +20,17 @@ I improved shading by using three direct light sources with one dim ambient ligh
 
 This project is bundled with [Webpack](https://webpack.js.org/):
 
-```bash
-  "scripts": {
-    "build": "webpack --config=webpack.prod.js",
-    "build-dev": "webpack --config=webpack.dev.js",
-    "start": "webpack serve webpack-dev-server --open --config=webpack.dev.js"
-  },
+```json
+"build": "webpack --config=webpack.prod.js",
+"build-dev": "webpack --config=webpack.dev.js",
+"start": "webpack serve webpack-dev-server --open --config=webpack.dev.js"
 ```
 
-and
+Details:
 
-```cmd
-  npm start        # development build (live on localhost)
-  npm run build    # static production build
+```bash
+npm start        # development build in ./dist
+npm run build    # static production build in ./
 ```
 
 ## License

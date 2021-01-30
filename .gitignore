@@ -78,9 +78,9 @@ typings/
 # Next.js build output
 .next
 
-# Nuxt.js build / generate output
-.nuxt
-dist
+# Ignore development files, except index.html
+dist/*
+!dist/index.html
 
 # Gatsby files
 .cache/

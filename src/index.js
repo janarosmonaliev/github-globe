@@ -20,14 +20,12 @@ var angle = 0;
 var Globe;
 var maxRelativeCases = 0;
 
-// SECTION Init
-
 init();
 initGlobe();
 onWindowResize();
 animate();
 
-// SECTION Initializing core elements
+// SECTION Initializing core ThreeJS elements
 function init() {
   // Initialize renderer
   renderer = new WebGLRenderer({ antialias: true });
@@ -40,7 +38,6 @@ function init() {
   scene = new Scene();
   scene.add(new AmbientLight(0xbbbbbb, 0.3));
   scene.background = new Color(0x040d21);
-  // scene.add(new DirectionalLight(0xffffff, 0.8));
 
   // Initialize camera, light
   camera = new PerspectiveCamera();
@@ -82,6 +79,7 @@ function init() {
   controls.maxDistance = 800;
   controls.rotateSpeed = 0.8;
   controls.zoomSpeed = 1;
+  controls.autoRotate = true;
 
   controls.minPolarAngle = Math.PI / 3.5;
   controls.maxPolarAngle = Math.PI - Math.PI / 3;
@@ -111,7 +109,7 @@ function initGlobe() {
   // NOTE Cool stuff
   // globeMaterial.wireframe = true;
 
-  // Initialize glow
+  // Initialize the glow
   var options = {
     backside: true,
     color: "#3a228a",

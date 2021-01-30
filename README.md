@@ -14,7 +14,7 @@ The globe is constructed with [three-globe](https://github.com/vasturiano/three-
 
 Please visit [three-globe](https://github.com/vasturiano/three-globe) for detailed documentation if you want to edit the `Globe` object to add data visualization. Speaking of the Glow, `three-globe` does not let you access the glow mesh object yet, so the default glow was turned off and a separate `three-glow-mesh` is added to the scene instead.
 
-### [Live demo](https://janarosmonaliev.github.io/pandemic-globe/)
+### [Live demo](https://janarosmonaliev.github.io/github-globe/)
 
 ## Usage
 

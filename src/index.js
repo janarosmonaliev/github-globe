@@ -15,6 +15,8 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { createGlowMesh } from "three-glow-mesh";
 import countries from "./files/globe-data-min.json";
+import travelHistory from "./files/my-flights.json";
+import airportHistory from "./files/my-airports.json";
 var renderer, camera, scene, controls;
 var angle = 0;
 var Globe;
@@ -56,7 +58,10 @@ function init() {
   dLight2.position.set(-200, 500, 200);
   camera.add(dLight2);
 
-  camera.position.z = 400;
+  camera.position.z = 0;
+  camera.position.x = 400;
+  camera.position.y = 200;
+
   scene.add(camera);
 
   // Additional effects
@@ -79,7 +84,7 @@ function init() {
   controls.maxDistance = 800;
   controls.rotateSpeed = 0.8;
   controls.zoomSpeed = 1;
-  controls.autoRotate = true;
+  controls.autoRotate = false;
 
   controls.minPolarAngle = Math.PI / 3.5;
   controls.maxPolarAngle = Math.PI - Math.PI / 3;
@@ -92,13 +97,33 @@ function initGlobe() {
   // Initialize the Globe
   Globe = new ThreeGlobe()
     // .globeImageUrl(EarthDarkSkin)
+    .arcsData(travelHistory.flights)
+    .arcColor((e) => {
+      return e.status ? "#9cff00" : "#617073";
+    })
+    .arcAltitude((e) => {
+      return e.arcAlt;
+    })
+    .arcStroke((e) => {
+      return e.status ? 0.5 : 0.3;
+    })
+    .arcDashLength(0.9)
+    .arcDashGap(4)
+    .arcDashAnimateTime(1000)
+    .arcsTransitionDuration(100)
+    .arcDashInitialGap(() => Math.random() * 5)
+    .labelsData(airportHistory.airports)
+    .labelColor(() => "#9cff00")
+    .labelSize((e) => e.size)
+    .labelResolution(6)
+    .labelAltitude(0.01)
     .hexPolygonsData(countries.features)
     // .hexPolygonCurvatureResolution(9)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
     .hexPolygonColor((feature) => {
-      return "#ffffff";
+      return "rgba(255,255,255, 0.5)";
     });
 
   const globeMaterial = Globe.globeMaterial();

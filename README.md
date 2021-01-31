@@ -1,6 +1,6 @@
 # Github Globe
 
-[github-globe made by Zhanar Osmonaliev](https://janarosmonaliev.github.io/github-globe/src/files/github-globe-banner.png)
+![github-globe made by Zhanar Osmonaliev](https://janarosmonaliev.github.io/github-globe/src/files/github-globe-banner.png)
 
 ## Inspiration
 
@@ -10,11 +10,11 @@ This project was inspired by [Github's homepage](https://github.com/home), where
 
 The globe is constructed with [three-globe](https://github.com/vasturiano/three-globe), a ThreeJS data-visualization project made by [@vasturiano](https://github.com/vasturiano). Then, the scene is shaded with a dim ambient light and multiple directional lights to resemble a dreamy space environment. The globe's `MeshPhongMaterial` is also adjusted to fit the environment.
 
+## [Live demo](https://janarosmonaliev.github.io/github-globe/)
+
 ## Documentation
 
 Please visit [three-globe](https://github.com/vasturiano/three-globe) for detailed documentation if you want to edit the `Globe` object to add data visualization. Speaking of the Glow, `three-globe` does not let you access the glow mesh object yet, so the default glow was turned off and a separate `three-glow-mesh` is added to the scene instead.
-
-### [Live demo](https://janarosmonaliev.github.io/pandemic-globe/)
 
 ## Usage
 

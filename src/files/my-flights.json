@@ -3,7 +3,7 @@
     "flights": [
         {
             "type": "flight",
-            "order": "",
+            "order": 1,
             "from" : "FRU",
             "to": "TAS",
             "flightCode": "HY 778",
@@ -17,7 +17,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 2,
             "from" : "TAS",
             "to": "ICN",
             "flightCode": "HY 551",
@@ -31,7 +31,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 3,
             "from" : "ICN",
             "to": "KUL",
             "flightCode": "D7 507",
@@ -45,7 +45,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 4,
             "from" : "KUL",
             "to": "SIN",
             "flightCode": "TR 453",
@@ -59,7 +59,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 4.5,
             "from" : "KUL",
             "to": "SIN",
             "flightCode": "TR 453",
@@ -73,7 +73,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 5,
             "from" : "KUL",
             "to": "DPS",
             "flightCode": "OD 177",
@@ -87,7 +87,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 6,
             "from" : "DPS",
             "to": "KUL",
             "flightCode": "OD 325",
@@ -101,7 +101,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 7,
             "from" : "KUL",
             "to": "DMK",
             "flightCode": "AK 882",
@@ -115,7 +115,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 8,
             "from" : "BKK",
             "to": "KJA",
             "flightCode": "S7 6406",
@@ -129,7 +129,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 9,
             "from" : "KJA",
             "to": "OVB",
             "flightCode": "S7 5306",
@@ -143,7 +143,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 10,
             "from" : "OVB",
             "to": "FRU",
             "flightCode": "S7 5541",
@@ -157,7 +157,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 10.5,
             "from" : "FRU",
             "to": "ALA",
             "flightCode": "KC 110",
@@ -171,7 +171,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 11,
             "from" : "ALA",
             "to": "ICN",
             "flightCode": "KC 909",
@@ -185,7 +185,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 12,
             "from" : "FRU",
             "to": "ALA",
             "flightCode": "KC 110",
@@ -199,7 +199,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 13,
             "from" : "ALA",
             "to": "BKK",
             "flightCode": "KC 931",
@@ -213,7 +213,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 13.5,
             "from" : "ICN",
             "to": "DMK",
             "flightCode": "XJ 703",
@@ -227,7 +227,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 14,
             "from" : "DMK",
             "to": "ICN",
             "flightCode": "XJ 700",
@@ -241,7 +241,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 14.5,
             "from" : "DMK",
             "to": "ICN",
             "flightCode": "XJ 702",
@@ -255,7 +255,7 @@
         },
         {
             "type": "flight",
-            "order": "",
+            "order": 15,
             "from" : "BKK",
             "to": "ICN",
             "flightCode": "TG 656",

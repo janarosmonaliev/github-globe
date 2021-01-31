@@ -12,6 +12,8 @@ The globe is constructed with [three-globe](https://github.com/vasturiano/three-
 
 ## [Live demo](https://janarosmonaliev.github.io/github-globe/)
 
+All my attended/cancelled flights (2019-2020) are displayed on the globe. If you try to follow one arc, that would be the sequence of my travel destinatons. Red arcs are cancelled flights.
+
 ## Documentation
 
 Please visit [three-globe](https://github.com/vasturiano/three-globe) for detailed documentation if you want to edit the `Globe` object to add data visualization. Speaking of the Glow, `three-globe` does not let you access the glow mesh object yet, so the default glow was turned off and a separate `three-glow-mesh` is added to the scene instead.

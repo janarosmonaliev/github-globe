@@ -99,7 +99,7 @@ function initGlobe() {
     // .globeImageUrl(EarthDarkSkin)
     .arcsData(travelHistory.flights)
     .arcColor((e) => {
-      return e.status ? "#9cff00" : "#617073";
+      return e.status ? "#9cff00" : "#FF4000";
     })
     .arcAltitude((e) => {
       return e.arcAlt;
@@ -109,12 +109,17 @@ function initGlobe() {
     })
     .arcDashLength(0.9)
     .arcDashGap(4)
-    .arcDashAnimateTime(1000)
-    .arcsTransitionDuration(100)
-    .arcDashInitialGap(() => Math.random() * 5)
+    .arcDashAnimateTime(500)
+    .arcsTransitionDuration(1000)
+    .arcDashInitialGap((e) => e.order * 1)
     .labelsData(airportHistory.airports)
     .labelColor(() => "#9cff00")
+    .labelDotOrientation((e) => {
+      return e.text === "ALA" ? "top" : "right";
+    })
+    .labelDotRadius(0.3)
     .labelSize((e) => e.size)
+    .labelText("city")
     .labelResolution(6)
     .labelAltitude(0.01)
     .hexPolygonsData(countries.features)
@@ -122,8 +127,14 @@ function initGlobe() {
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)
-    .hexPolygonColor((feature) => {
-      return "rgba(255,255,255, 0.5)";
+    .hexPolygonColor((e) => {
+      if (
+        ["KGZ", "KOR", "THA", "RUS", "UZB", "IDN", "KAZ", "MYS"].includes(
+          e.properties.ISO_A3
+        )
+      ) {
+        return "rgba(255,255,255, 1)";
+      } else return "rgba(255,255,255, 0.7)";
     });
 
   const globeMaterial = Globe.globeMaterial();

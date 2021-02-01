@@ -58,14 +58,14 @@ function init() {
   dLight2.position.set(-200, 500, 200);
   camera.add(dLight2);
 
-  camera.position.z = 0;
-  camera.position.x = 400;
+  camera.position.z = -50;
+  camera.position.x = 300;
   camera.position.y = 200;
 
   scene.add(camera);
 
   // Additional effects
-  scene.fog = new Fog(0x535ef3, 400, 2000);
+  // scene.fog = new Fog(0x535ef3, 400, 2000);
 
   // Helpers
   // const axesHelper = new AxesHelper(800);
@@ -113,7 +113,7 @@ function initGlobe() {
     .arcsTransitionDuration(1000)
     .arcDashInitialGap((e) => e.order * 1)
     .labelsData(airportHistory.airports)
-    .labelColor(() => "#9cff00")
+    .labelColor(() => "#ffcb21")
     .labelDotOrientation((e) => {
       return e.text === "ALA" ? "top" : "right";
     })
@@ -123,7 +123,6 @@ function initGlobe() {
     .labelResolution(6)
     .labelAltitude(0.01)
     .hexPolygonsData(countries.features)
-    // .hexPolygonCurvatureResolution(9)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
     .showAtmosphere(false)

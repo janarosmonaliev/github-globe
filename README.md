@@ -12,7 +12,7 @@ The globe is constructed with [three-globe](https://github.com/vasturiano/three-
 
 ## [Live demo](https://janarosmonaliev.github.io/github-globe/)
 
-All my attended/cancelled flights (2019-2020) are displayed on the globe. If you try to follow one arc, that would be the sequence of my travel destinatons. Red arcs are cancelled flights.
+All my attended/cancelled flights (2019-2020) are displayed on the globe. If you try to follow one arc, that would be the sequence of my travel destinations. Red arcs are cancelled flights.
 
 ## Documentation
 

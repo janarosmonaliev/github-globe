@@ -18,9 +18,11 @@ import countries from "./files/globe-data-min.json";
 import travelHistory from "./files/my-flights.json";
 import airportHistory from "./files/my-airports.json";
 var renderer, camera, scene, controls;
-var angle = 0;
+let mouseX = 0;
+let mouseY = 0;
+let windowHalfX = window.innerWidth / 2;
+let windowHalfY = window.innerHeight / 2;
 var Globe;
-var maxRelativeCases = 0;
 
 init();
 initGlobe();
@@ -58,14 +60,14 @@ function init() {
   dLight2.position.set(-200, 500, 200);
   camera.add(dLight2);
 
-  camera.position.z = -50;
-  camera.position.x = 300;
-  camera.position.y = 200;
+  camera.position.z = 400;
+  camera.position.x = 0;
+  camera.position.y = 0;
 
   scene.add(camera);
 
   // Additional effects
-  // scene.fog = new Fog(0x535ef3, 400, 2000);
+  scene.fog = new Fog(0x535ef3, 400, 2000);
 
   // Helpers
   // const axesHelper = new AxesHelper(800);
@@ -81,7 +83,7 @@ function init() {
   controls.dynamicDampingFactor = 0.01;
   controls.enablePan = false;
   controls.minDistance = 200;
-  controls.maxDistance = 800;
+  controls.maxDistance = 500;
   controls.rotateSpeed = 0.8;
   controls.zoomSpeed = 1;
   controls.autoRotate = false;
@@ -90,6 +92,7 @@ function init() {
   controls.maxPolarAngle = Math.PI - Math.PI / 3;
 
   window.addEventListener("resize", onWindowResize, false);
+  document.addEventListener("mousemove", onMouseMove);
 }
 
 // SECTION Globe
@@ -136,6 +139,8 @@ function initGlobe() {
       } else return "rgba(255,255,255, 0.7)";
     });
 
+  Globe.rotateY(-Math.PI * (5 / 9));
+  Globe.rotateZ(-Math.PI / 6);
   const globeMaterial = Globe.globeMaterial();
   globeMaterial.color = new Color(0x3a228a);
   globeMaterial.emissive = new Color(0x220038);
@@ -157,6 +162,11 @@ function initGlobe() {
   scene.add(Globe);
 }
 
+function onMouseMove(event) {
+  mouseX = event.clientX - windowHalfX;
+  mouseY = event.clientY - windowHalfY;
+}
+
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -165,9 +175,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  // camera.position.x = 400 * Math.cos(angle);
-  // camera.position.z = 400 * Math.sin(angle);
-  // angle += 0.001;
+  camera.position.x += (mouseX - camera.position.x) * 0.005;
+  camera.position.y += (-mouseY - camera.position.y) * 0.005;
+  camera.lookAt(scene.position);
   controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(animate);

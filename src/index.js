@@ -112,7 +112,7 @@ function initGlobe() {
     })
     .arcDashLength(0.9)
     .arcDashGap(4)
-    .arcDashAnimateTime(500)
+    .arcDashAnimateTime(1000)
     .arcsTransitionDuration(1000)
     .arcDashInitialGap((e) => e.order * 1)
     .labelsData(airportHistory.airports)
@@ -125,6 +125,11 @@ function initGlobe() {
     .labelText("city")
     .labelResolution(6)
     .labelAltitude(0.01)
+    .pointsData(airportHistory.airports)
+    .pointColor(() => "#ffffff")
+    .pointsMerge(true)
+    .pointAltitude(0.07)
+    .pointRadius(0.05)
     .hexPolygonsData(countries.features)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
@@ -165,18 +170,23 @@ function initGlobe() {
 function onMouseMove(event) {
   mouseX = event.clientX - windowHalfX;
   mouseY = event.clientY - windowHalfY;
+  console.log("x: " + mouseX + " y: " + mouseY);
 }
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
+  windowHalfX = window.innerWidth / 2;
+  windowHalfY = window.innerHeight / 2;
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
-  camera.position.x += (mouseX - camera.position.x) * 0.005;
-  camera.position.y += (-mouseY - camera.position.y) * 0.005;
+  camera.position.x +=
+    Math.abs(mouseX) <= windowHalfX / 2
+      ? (mouseX / 2 - camera.position.x) * 0.005
+      : 0;
+  camera.position.y += (-mouseY / 2 - camera.position.y) * 0.005;
   camera.lookAt(scene.position);
   controls.update();
   renderer.render(scene, camera);

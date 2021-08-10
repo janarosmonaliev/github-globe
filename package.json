@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "three": "^0.124.0",
-    "three-globe": "^2.11.1",
+    "three-globe": "^2.18.6",
     "three-glow-mesh": "^0.1.2"
   },
   "devDependencies": {

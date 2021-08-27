@@ -162,15 +162,19 @@ function initGlobe() {
     power: 6,
     coefficient: 0.3,
   };
-  var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
-  Globe.add(glowMesh);
+  try {
+    var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
+    Globe.add(glowMesh);
+  } catch (err) {
+    console.log("Your threeJS version does not support three-glow-mesh");
+  }
   scene.add(Globe);
 }
 
 function onMouseMove(event) {
   mouseX = event.clientX - windowHalfX;
   mouseY = event.clientY - windowHalfY;
-  console.log("x: " + mouseX + " y: " + mouseY);
+  // console.log("x: " + mouseX + " y: " + mouseY);
 }
 
 function onWindowResize() {

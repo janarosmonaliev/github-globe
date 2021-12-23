@@ -105,7 +105,9 @@ function initGlobe() {
     .hexPolygonsData(countries.features)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
-    .showAtmosphere(false)
+    .showAtmosphere(true)
+    .atmosphereColor("#3a228a")
+    .atmosphereAltitude(0.25)
     .hexPolygonColor((e) => {
       if (
         ["KGZ", "KOR", "THA", "RUS", "UZB", "IDN", "KAZ", "MYS"].includes(
@@ -116,6 +118,7 @@ function initGlobe() {
       } else return "rgba(255,255,255, 0.7)";
     });
 
+  // NOTE Arc animations are followed after the globe enters the scene
   setTimeout(() => {
     Globe.arcsData(travelHistory.flights)
       .arcColor((e) => {
@@ -156,23 +159,10 @@ function initGlobe() {
   globeMaterial.emissive = new Color(0x220038);
   globeMaterial.emissiveIntensity = 0.1;
   globeMaterial.shininess = 0.7;
+
   // NOTE Cool stuff
   // globeMaterial.wireframe = true;
 
-  // Initialize the glow
-  var options = {
-    backside: true,
-    color: "#3a228a",
-    size: 100 * 0.25,
-    power: 6,
-    coefficient: 0.3,
-  };
-  try {
-    var glowMesh = createGlowMesh(new SphereGeometry(100, 75, 75), options);
-    Globe.add(glowMesh);
-  } catch (err) {
-    console.log("Your threeJS version does not support three-glow-mesh");
-  }
   scene.add(Globe);
 }
 

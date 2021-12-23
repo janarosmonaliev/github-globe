@@ -6,9 +6,9 @@ import {
   DirectionalLight,
   Color,
   Fog,
-  AxesHelper,
-  DirectionalLightHelper,
-  CameraHelper,
+  // AxesHelper,
+  // DirectionalLightHelper,
+  // CameraHelper,
   PointLight,
   SphereGeometry,
 } from "three";
@@ -98,38 +98,10 @@ function init() {
 // SECTION Globe
 function initGlobe() {
   // Initialize the Globe
-  Globe = new ThreeGlobe()
-    // .globeImageUrl(EarthDarkSkin)
-    .arcsData(travelHistory.flights)
-    .arcColor((e) => {
-      return e.status ? "#9cff00" : "#FF4000";
-    })
-    .arcAltitude((e) => {
-      return e.arcAlt;
-    })
-    .arcStroke((e) => {
-      return e.status ? 0.5 : 0.3;
-    })
-    .arcDashLength(0.9)
-    .arcDashGap(4)
-    .arcDashAnimateTime(1000)
-    .arcsTransitionDuration(1000)
-    .arcDashInitialGap((e) => e.order * 1)
-    .labelsData(airportHistory.airports)
-    .labelColor(() => "#ffcb21")
-    .labelDotOrientation((e) => {
-      return e.text === "ALA" ? "top" : "right";
-    })
-    .labelDotRadius(0.3)
-    .labelSize((e) => e.size)
-    .labelText("city")
-    .labelResolution(6)
-    .labelAltitude(0.01)
-    .pointsData(airportHistory.airports)
-    .pointColor(() => "#ffffff")
-    .pointsMerge(true)
-    .pointAltitude(0.07)
-    .pointRadius(0.05)
+  Globe = new ThreeGlobe({
+    waitForGlobeReady: true,
+    animateIn: true,
+  })
     .hexPolygonsData(countries.features)
     .hexPolygonResolution(3)
     .hexPolygonMargin(0.7)
@@ -143,6 +115,39 @@ function initGlobe() {
         return "rgba(255,255,255, 1)";
       } else return "rgba(255,255,255, 0.7)";
     });
+
+  setTimeout(() => {
+    Globe.arcsData(travelHistory.flights)
+      .arcColor((e) => {
+        return e.status ? "#9cff00" : "#FF4000";
+      })
+      .arcAltitude((e) => {
+        return e.arcAlt;
+      })
+      .arcStroke((e) => {
+        return e.status ? 0.5 : 0.3;
+      })
+      .arcDashLength(0.9)
+      .arcDashGap(4)
+      .arcDashAnimateTime(1000)
+      .arcsTransitionDuration(1000)
+      .arcDashInitialGap((e) => e.order * 1)
+      .labelsData(airportHistory.airports)
+      .labelColor(() => "#ffcb21")
+      .labelDotOrientation((e) => {
+        return e.text === "ALA" ? "top" : "right";
+      })
+      .labelDotRadius(0.3)
+      .labelSize((e) => e.size)
+      .labelText("city")
+      .labelResolution(6)
+      .labelAltitude(0.01)
+      .pointsData(airportHistory.airports)
+      .pointColor(() => "#ffffff")
+      .pointsMerge(true)
+      .pointAltitude(0.07)
+      .pointRadius(0.05);
+  }, 1000);
 
   Globe.rotateY(-Math.PI * (5 / 9));
   Globe.rotateZ(-Math.PI / 6);
@@ -180,8 +185,8 @@ function onMouseMove(event) {
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
+  windowHalfX = window.innerWidth / 1.5;
+  windowHalfY = window.innerHeight / 1.5;
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
